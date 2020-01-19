@@ -98,12 +98,6 @@ wait_on_single_device()
 # at this point we know the content of ALL_DEVICES is syntacticly correct
 wait_on_devices()
 {
-    if [ -w $CIO_SETTLE ]; then
-	[ $VERBOSE ] && echo "Waiting until all pending CIO requests are processed"
-	echo 1 > $CIO_SETTLE
-	return
-    fi
-
     OLD_IFS=$IFS
     IFS=","
     set $ALL_DEVICES
@@ -248,7 +242,6 @@ if [ "$DEVICE" ]; then
     [ $VERBOSE ] && echo "Freeing specific devices"
     free_device $DEVICE
     wait_on_devices
-    udevadm settle
     exit 0
 fi
 
@@ -310,4 +303,9 @@ fi
 
 [ -z "$ALL_DEVICES" ] && exit 0
 
-wait_on_devices
+if [ -w $CIO_SETTLE ]; then
+    [ $VERBOSE ] && echo "Waiting until all pending CIO requests are processed"
+    echo 1 > $CIO_SETTLE
+else
+    wait_on_devices
+fi

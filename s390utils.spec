@@ -5,7 +5,7 @@ Name:           s390utils
 Summary:        Utilities and daemons for IBM System/z
 Group:          System Environment/Base
 Version:        1.23.0
-Release:        12%{?dist}
+Release:        3%{?dist}
 Epoch:          2
 License:        GPLv2 and GPLv2+ and CPL
 ExclusiveArch:  s390 s390x
@@ -734,43 +734,6 @@ User-space development files for the s390/s390x architecture.
 
 
 %changelog
-* Wed Mar 05 2014 Dan Horák <dan[at]danny.cz> - 2:1.23.0-12
-- udpdate the device_cio_free script for #1054691
-- Resolves: #1054691
-
-* Tue Mar 04 2014 Dan Horák <dan[at]danny.cz> - 2:1.23.0-11
-- fix zFCP device discovery in anaconda GUI (#1054691)
-- Resolves: #1054691
-
-* Mon Feb 10 2014 Dan Horák <dan[at]danny.cz> - 2:1.23.0-10
-- znetconf: Allow for 16-char network interface names (#1062285)
-- qetharp: Allow for 16-char network interface names (#1062250)
-- Resolves: #1062285, #1062250
-
-* Mon Feb 03 2014 Dan Horák <dan[at]danny.cz> - 2:1.23.0-9
-- znetconf,lsqeth: Allow for 16-char network interface name (#1060303)
-- Resolves: #1060303
-
-* Wed Jan 29 2014 Dan Horák <dan[at]danny.cz> - 2:1.23.0-8
-- zipl: Fix zfcpdump "struct job_ipl_data" initialization (#1058856)
-- Resolves: #1058856
-
-* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 2:1.23.0-7
-- Mass rebuild 2014-01-24
-
-* Wed Jan 15 2014 Dan Horák <dan[at]danny.cz> - 2:1.23.0-6
-- zipl: fix segmentation fault in automenu array (#1017541)
-- zfcpconf.sh: check current online state before setting zfcp device online (#1042496)
-- Resolves: #1017541, #1042496
-
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 2:1.23.0-5
-- Mass rebuild 2013-12-27
-
-* Tue Nov 19 2013 Dan Horák <dan[at]danny.cz> - 2:1.23.0-4
-- dbginfo.sh: enhancements for script execution and man page (#1031144)
-- dbginfo.sh: avoid double data collection (#1032068)
-- Resolves: #1031144, #1032068
-
 * Wed Nov 06 2013 Dan Horák <dan[at]danny.cz> - 2:1.23.0-3
 - build daemons hardened (#881250)
 - zipl: Use "possible_cpus" kernel parameter (#1016180)
