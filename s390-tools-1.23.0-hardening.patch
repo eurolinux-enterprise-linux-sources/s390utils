@@ -1,0 +1,75 @@
+From a1d489d42248acd0b5f2e3348df5f2ece22dc9e0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Dan=20Hor=C3=A1k?= <dan@danny.cz>
+Date: Tue, 5 Nov 2013 15:34:11 +0100
+Subject: [PATCH] build daemons hardened
+
+---
+ common.mak              | 3 +++
+ cpuplugd/Makefile       | 4 ++--
+ mon_tools/Makefile      | 2 ++
+ osasnmpd/Makefile.rules | 3 +++
+ 4 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/common.mak b/common.mak
+index 4373da5..7b992b4 100644
+--- a/common.mak
++++ b/common.mak
+@@ -76,6 +76,9 @@ CXXFLAGS	= $(WARNFLAGS) -O3 -DS390_TOOLS_RELEASE=$(S390_TOOLS_RELEASE) \
+ 			-DS390_TOOLS_SYSCONFDIR=$(SYSCONFDIR) \
+ 			 -g $(OPT_FLAGS)
+ 
++DAEMON_CFLAGS	= -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1
++DAEMON_LDFLAGS	= -specs=/usr/lib/rpm/redhat/redhat-hardened-ld
++
+ # make G=1
+ # Compile tools so that gcov can be used to collect code coverage data.
+ # See the gcov man page for details.
+diff --git a/cpuplugd/Makefile b/cpuplugd/Makefile
+index 4a72075..28480f5 100644
+--- a/cpuplugd/Makefile
++++ b/cpuplugd/Makefile
+@@ -1,6 +1,6 @@
+ include ../common.mak
+ 
+-CFLAGS += -I../include
++CFLAGS += $(DAEMON_CFLAGS) -I../include
+ 
+ all: cpuplugd
+ 
+@@ -10,7 +10,7 @@ OBJECTS = daemon.o cpu.o info.o terms.o config.o main.o getopt.o mem.o
+ $(OBJECTS): cpuplugd.h
+ 
+ cpuplugd: $(OBJECTS)
+-	$(LINK) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@
++	$(LINK) $(DAEMON_LDFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@
+ 
+ clean:
+ 	rm -f cpuplugd $(OBJECTS)
+diff --git a/mon_tools/Makefile b/mon_tools/Makefile
+index c8c58fc..b025f65 100644
+--- a/mon_tools/Makefile
++++ b/mon_tools/Makefile
+@@ -1,6 +1,8 @@
+ include ../common.mak
+ 
+ CPPFLAGS += -I../include
++CFLAGS += $(DAEMON_CFLAGS)
++LDFLAGS += $(DAEMON_LDFLAGS)
+ 
+ all: mon_fsstatd mon_procd
+ 
+diff --git a/osasnmpd/Makefile.rules b/osasnmpd/Makefile.rules
+index 6668ed6..11ee8eb 100644
+--- a/osasnmpd/Makefile.rules
++++ b/osasnmpd/Makefile.rules
+@@ -10,4 +10,7 @@ CPPFLAGS += -DNETSNMP5
+ endif
+ CPPFLAGS += -I../include
+ 
++CFLAGS += $(DAEMON_CFLAGS)
++LDFLAGS += $(DAEMON_LDFLAGS)
++
+ OBJS = ibmOSAMib.o ibmOSAMibUtil.o osasnmpd.o
+-- 
+1.8.1.4
+

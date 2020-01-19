@@ -1,0 +1,31 @@
+From 25442f958a12b428b7d063b927ac48965dcd8164 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Dan=20Hor=C3=A1k?= <dan@danny.cz>
+Date: Fri, 28 Jan 2011 16:11:19 +0100
+Subject: [PATCH] use detected filesystem block size on FBA devices
+
+If a FBA device is not properly formated, then the CMS file system can
+have a different block size. The cmsfs tools were able to detect the file
+system block size, but in fact they still used default 512 instead. And
+using the default was causing crashes. Now the detected value is used.
+
+https://bugzilla.redhat.com/show_bug.cgi?id=651012
+---
+ cmsfsany.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/cmsfsany.c b/cmsfsany.c
+index 55bcfdc..18efffb 100644
+--- a/cmsfsany.c
++++ b/cmsfsany.c
+@@ -102,7 +102,7 @@ int cmsfs_find_label(struct CMSSUPER *vol,struct CMSFSADT *adt)
+             cmsfs_error(cmsfs_ermsg);
+           }
+         vol->flags = CMSFSFBA;
+-        vol->blksz = 512;
++        vol->blksz = blksz;
+         return vol->blksz;
+       } }
+ 
+-- 
+1.7.3.5
+

@@ -1,0 +1,10 @@
+[Unit]
+Description=Free all devices on startup
+DefaultDependencies=no
+Before=sysinit.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/sbin/device_cio_free
+StandardOutput=syslog
